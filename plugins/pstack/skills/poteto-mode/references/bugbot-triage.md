@@ -140,3 +140,25 @@ Append new candidate learnings here during or after babysitting when they look t
   exists for a missing dependency rather than a failed operation.
 - Source: one CLI-rename PR whose fallback existed for a missing binary rather
   than a failed command.
+
+### Accept the premise, decline a remedy that mutates state the component does not own
+
+- Confidence: candidate
+- Skip when: n/a — this is a partial accept, not a dismissal. The finding is
+  real and gets fixed. What gets declined is the remedy.
+- Do not skip when: Reviewers agree a component reports a wrong or misleading
+  state, and propose making it edit or ignore a row it did not create so the
+  run passes. The tell is a remedy phrased as "skip the X rows" or "treat X as
+  ours", where X is written by someone outside the component's lifecycle.
+  Suppressing it converts a loud failure into a quiet wrong answer, which is
+  usually the failure the change existed to remove. Fix the attribution
+  instead: report the same condition with the cause named and the remedy the
+  operator owns, and split the message when the remedies differ, such as
+  converging the component versus changing state only a human can change.
+- Example signal: Three independent reviewers proposed suppressing
+  organisation-wide default rows in a seed's post-condition so the seed would
+  pass. That would have published a receipt saying the persona is not exempt
+  while the desktop exempted them.
+- Source: one seeding PR where the same ownership confusion, reading
+  `is_default=False` as "this row is mine", produced both a stale-detach bug
+  and a wedged run.
