@@ -144,8 +144,9 @@ Append new candidate learnings here during or after babysitting when they look t
 ### Accept the premise, decline a remedy that mutates state the component does not own
 
 - Confidence: candidate
-- Skip when: n/a — this is a partial accept, not a dismissal. The finding is
-  real and gets fixed. What gets declined is the remedy.
+- Skip when: Never skip the finding itself; it is real and gets fixed. Decline
+  only the remedy, and only when it would have the component edit, adopt, or
+  ignore state written outside its own lifecycle.
 - Do not skip when: Reviewers agree a component reports a wrong or misleading
   state, and propose making it edit or ignore a row it did not create so the
   run passes. The tell is a remedy phrased as "skip the X rows" or "treat X as
@@ -161,4 +162,6 @@ Append new candidate learnings here during or after babysitting when they look t
   while the desktop exempted them.
 - Source: one seeding PR where the same ownership confusion, reading
   `is_default=False` as "this row is mine", produced both a stale-detach bug
-  and a wedged run.
+  and a wedged run. The next fix replaced it with "some scenario declares this
+  key", which orphaned the seed's own rows once a key was renamed. Only
+  recording provenance on the row itself closed it.
